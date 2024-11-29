@@ -14,6 +14,26 @@ func PublicRoutes(movieHandler handler.MovieHandler) []route.Route {
 			Path:    "/movies",
 			Handler: movieHandler.GetMovies,
 		},
+		{
+			Method: http.MethodGet,
+			Path:    "/movies/:id",
+			Handler: movieHandler.GetMovieByID,
+		},
+		{
+			Method: http.MethodPost,
+			Path:    "/movies",
+			Handler: movieHandler.CreateMovie,
+		},
+		{
+			Method: http.MethodPut,
+			Path:    "/movies/:id",
+			Handler: movieHandler.UpdateMovie,
+		},
+		{
+			Method: http.MethodDelete,
+			Path:    "/movies/:id",
+			Handler: movieHandler.DeleteMovie,
+		},
 	}
 }
 

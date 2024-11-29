@@ -1,13 +1,13 @@
 package entity
 
 type Movie struct {
-	ID int64
-	Title string
-	Year int64
-	Director string
-	Description string
+	ID          int64  `json:"id"`
+	Title       string `json:"title"`
+	Year        int64  `json:"year"`
+	Director    string `json:"director"`
+	Description string `json:"description"`
 }
 
-func (Movie) TableName() string{
+func (Movie) TableName() string {
 	return "movies"
 }

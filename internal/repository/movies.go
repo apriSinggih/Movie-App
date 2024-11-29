@@ -62,5 +62,5 @@ func (r *movieRepository) Update(ctx context.Context, movie *entity.Movie) error
 }
 
 func (r *movieRepository) Delete(ctx context.Context,id int64) error {
-	return r.db.WithContext(ctx).Delete(id).Error
+	return r.db.WithContext(ctx).Delete(&entity.Movie{ID: id}).Error
 }
