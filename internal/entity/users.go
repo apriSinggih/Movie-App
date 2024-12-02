@@ -2,7 +2,7 @@ package entity
 
 type User struct{
 	ID int64
-	UserName string
+	Username string
 	Password string
 	FullName string
 }

@@ -20,7 +20,7 @@ func main() {
 	db, err := database.InitDatabase(cfg.MySQLConfig)
 	checkError(err)
 
-	publicRoutes := builder.BuildPublicRoutes(db)
+	publicRoutes := builder.BuildPublicRoutes(cfg, db)
 	privateRoutes := builder.BuildPrivateRoutes(db)
 
 	srv := server.NewServer(publicRoutes, privateRoutes)

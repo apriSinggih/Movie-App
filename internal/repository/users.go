@@ -19,8 +19,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 	return &userRepository{db}
 }
 
-
-func (u *userRepository) GetByUserName(ctx context.Context, username string) (*entity.User, error){
+func (u *userRepository) GetByUserName(ctx context.Context, username string) (*entity.User, error) {
 	result := new(entity.User)
 	if err := u.db.WithContext(ctx).Where("username = ?", username).First(&result).Error; err != nil {
 		return nil, err

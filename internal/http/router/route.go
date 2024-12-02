@@ -7,8 +7,13 @@ import (
 	"github.com/apriSinggih/movie-app/pkg/route"
 )
 
-func PublicRoutes(movieHandler handler.MovieHandler) []route.Route {
+func PublicRoutes(movieHandler handler.MovieHandler, userHandler handler.UserHandler) []route.Route {
 	return []route.Route{
+		{
+			Method: http.MethodPost,
+			Path:    "/login",
+			Handler: userHandler.Login,
+		},
 		{
 			Method: http.MethodGet,
 			Path:    "/movies",
