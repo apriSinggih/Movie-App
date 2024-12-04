@@ -49,28 +49,28 @@ func PrivateRoutes(movieHandler handler.MovieHandler, userHandler handler.UserHa
 		},
 		{
 			Method: http.MethodGet,
-			Path:    "/users/:1",
+			Path:    "/users/:id",
 			Handler: userHandler.GetUserByID,
 			Roles: adminOnly,
 		},
-		// {
-		// 	Method: http.MethodPost,
-		// 	Path:    "/users",
-		// 	Handler: userHandler.CreateUser,
-		// 	Roles: adminOnly,
-		// },
-		// {
-		// 	Method: http.MethodPut,
-		// 	Path:    "/users/:1",
-		// 	Handler: userHandler.UpdateUser,
-		// 	Roles: adminOnly,
-		// },
-		// {
-		// 	Method: http.MethodDelete,
-		// 	Path:    "/users/:1",
-		// 	Handler: userHandler.DeleteUser,
-		// 	Roles: adminOnly,
-		// },
+		{
+			Method: http.MethodPost,
+			Path:    "/users",
+			Handler: userHandler.CreateUser,
+			Roles: adminOnly,
+		},
+		{
+			Method: http.MethodPut,
+			Path:    "/users/:id",
+			Handler: userHandler.UpdateUser,
+			Roles: adminOnly,
+		},
+		{
+			Method: http.MethodDelete,
+			Path:    "/users/:id",
+			Handler: userHandler.DeleteUser,
+			Roles: adminOnly,
+		},
 		{
 			Method: http.MethodGet,
 			Path:    "/movies",

@@ -70,3 +70,39 @@ func (h *UserHandler) GetUserByID(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, response.SuccessResponse("success get user by id", user))
 }
+
+func (h *UserHandler) CreateUser(ctx echo.Context) error {
+	var req dto.CreateUserRequest
+	if err := ctx.Bind(&req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+	err := h.userService.CreateUser(ctx.Request().Context(), &req)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, err.Error()))
+	}
+	return ctx.JSON(http.StatusOK, response.SuccessResponse("success create user", nil))
+}
+
+func (h *UserHandler) UpdateUser(ctx echo.Context) error {	
+	var req dto.UpdateUserRequest
+	if err := ctx.Bind(&req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+	err := h.userService.UpdateUser(ctx.Request().Context(), &req)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, err.Error()))
+	}
+	return ctx.JSON(http.StatusOK, response.SuccessResponse("success update user", nil))
+}
+
+func (h *UserHandler) DeleteUser(ctx echo.Context) error {
+	var req dto.GetUserByIDRequest
+	if err := ctx.Bind(&req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+	err := h.userService.DeleteUser(ctx.Request().Context(), req.ID)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, err.Error()))
+	}
+	return ctx.JSON(http.StatusOK, response.SuccessResponse("success delete user", nil))
+}

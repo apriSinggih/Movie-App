@@ -12,6 +12,8 @@ type UserRepository interface {
 	Create(ctx context.Context, user *entity.User) error
 	GetAll(ctx context.Context) ([]entity.User, error)
 	GetByID(ctx context.Context, id int64) (*entity.User, error)
+	UpdateUser(ctx context.Context, user *entity.User) error
+	DeleteUser(ctx context.Context, id int64) error
 }
 
 type userRepository struct {
@@ -49,4 +51,11 @@ func (u *userRepository) GetByID(ctx context.Context, id int64) (*entity.User, e
 		return nil, err
 	}
 	return result, nil
+}
+
+func (u *userRepository) UpdateUser(ctx context.Context, user *entity.User) error {
+	return u.db.WithContext(ctx).Save(user).Error
+}
+func (u *userRepository) DeleteUser(ctx context.Context, id int64) error {
+	return u.db.WithContext(ctx).Delete(&entity.User{}, id).Error
 }

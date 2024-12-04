@@ -17,6 +17,9 @@ type UserService interface {
 	Register(ctx context.Context, req dto.UserRegisterRequest) error
 	GetAll(ctx context.Context) ([]entity.User, error)
 	GetByID(ctx context.Context, id int64) (*entity.User, error)
+	CreateUser(ctx context.Context, user *dto.CreateUserRequest) error
+	UpdateUser(ctx context.Context, user *dto.UpdateUserRequest) error
+	DeleteUser(ctx context.Context, id int64) error
 }
 
 type userService struct {
@@ -37,13 +40,12 @@ func (s *userService) Login(ctx context.Context, username string, password strin
 		return nil, errors.New("username or password is incorrect")
 	}
 
-
 	expiredAt := time.Now().Local().Add(time.Minute * 10)
 
 	claims := &entity.JWTCustomeClaims{
 		Username: user.Username,
 		FullName: user.FullName,
-		Role: user.Role,
+		Role:     user.Role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "movie-app",
 			ExpiresAt: jwt.NewNumericDate(expiredAt),
@@ -52,7 +54,7 @@ func (s *userService) Login(ctx context.Context, username string, password strin
 	return claims, nil
 }
 
-func (s *userService) Register(ctx context.Context, req dto.UserRegisterRequest) error{
+func (s *userService) Register(ctx context.Context, req dto.UserRegisterRequest) error {
 	user := new(entity.User)
 
 	user.Username = req.Username
@@ -77,4 +79,36 @@ func (s *userService) GetAll(ctx context.Context) ([]entity.User, error) {
 
 func (s *userService) GetByID(ctx context.Context, id int64) (*entity.User, error) {
 	return s.userRepository.GetByID(ctx, id)
+}
+
+func (s *userService) CreateUser(ctx context.Context, req *dto.CreateUserRequest) error {
+	user := &entity.User{
+		Username: req.Username,
+		FullName: req.FullName,
+		Role:     req.Role,
+		Password: req.Password,
+	}
+
+	return s.userRepository.Create(ctx, user)
+}
+
+func (s *userService) UpdateUser(ctx context.Context, req *dto.UpdateUserRequest) error {
+	user, err := s.userRepository.GetByID(ctx, req.ID)
+	if err != nil {
+		return err
+	}
+	if req.Username != "" {
+		user.Username = req.Username
+	}
+	if req.FullName != "" {
+		user.FullName = req.FullName
+	}
+	if req.Role != "" {
+		user.Role = req.Role
+	}
+	return s.userRepository.UpdateUser(ctx, user)
+}
+
+func (s *userService) DeleteUser(ctx context.Context, id int64) error {
+	return s.userRepository.DeleteUser(ctx, id)
 }
