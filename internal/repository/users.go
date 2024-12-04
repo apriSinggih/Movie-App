@@ -9,6 +9,7 @@ import (
 
 type UserRepository interface {
 	GetByUserName(ctx context.Context, username string) (*entity.User, error)
+	Create(ctx context.Context, user *entity.User) error
 }
 
 type userRepository struct {
@@ -25,4 +26,9 @@ func (u *userRepository) GetByUserName(ctx context.Context, username string) (*e
 		return nil, err
 	}
 	return result, nil
+}
+
+
+func (u *userRepository) Create(ctx context.Context, user *entity.User) error {
+	return u.db.WithContext(ctx).Create(user).Error
 }

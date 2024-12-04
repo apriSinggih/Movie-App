@@ -37,3 +37,16 @@ func (h *UserHandler) Login(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, response.SuccessResponse("success login", map[string]string{"token": token}))
 }
+
+func (h *UserHandler) Register(ctx echo.Context) error {
+	var req dto.UserRegisterRequest
+	if err := ctx.Bind(&req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+	
+	err := h.userService.Register(ctx.Request().Context(), req)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, err.Error()))
+	}
+	return ctx.JSON(http.StatusOK, response.SuccessResponse("success register", nil))
+}
