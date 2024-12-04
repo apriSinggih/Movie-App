@@ -10,6 +10,8 @@ import (
 type UserRepository interface {
 	GetByUserName(ctx context.Context, username string) (*entity.User, error)
 	Create(ctx context.Context, user *entity.User) error
+	GetAll(ctx context.Context) ([]entity.User, error)
+	GetByID(ctx context.Context, id int64) (*entity.User, error)
 }
 
 type userRepository struct {
@@ -31,4 +33,20 @@ func (u *userRepository) GetByUserName(ctx context.Context, username string) (*e
 
 func (u *userRepository) Create(ctx context.Context, user *entity.User) error {
 	return u.db.WithContext(ctx).Create(user).Error
+}
+
+func (u *userRepository) GetAll(ctx context.Context) ([]entity.User, error) {
+	users := make([]entity.User, 0)
+	if err := u.db.WithContext(ctx).Find(&users).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+func (u *userRepository) GetByID(ctx context.Context, id int64) (*entity.User, error) {
+	result := new(entity.User)
+	if err := u.db.WithContext(ctx).Where("id = ?", id).First(&result).Error; err != nil {
+		return nil, err
+	}
+	return result, nil
 }

@@ -15,6 +15,8 @@ import (
 type UserService interface {
 	Login(ctx context.Context, username string, password string) (*entity.JWTCustomeClaims, error)
 	Register(ctx context.Context, req dto.UserRegisterRequest) error
+	GetAll(ctx context.Context) ([]entity.User, error)
+	GetByID(ctx context.Context, id int64) (*entity.User, error)
 }
 
 type userService struct {
@@ -67,4 +69,12 @@ func (s *userService) Register(ctx context.Context, req dto.UserRegisterRequest)
 	user.FullName = req.FullName
 	user.Role = "user"
 	return s.userRepository.Create(ctx, user)
+}
+
+func (s *userService) GetAll(ctx context.Context) ([]entity.User, error) {
+	return s.userRepository.GetAll(ctx)
+}
+
+func (s *userService) GetByID(ctx context.Context, id int64) (*entity.User, error) {
+	return s.userRepository.GetByID(ctx, id)
 }

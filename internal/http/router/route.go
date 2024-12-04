@@ -41,18 +41,18 @@ func PublicRoutes(movieHandler handler.MovieHandler, userHandler handler.UserHan
 
 func PrivateRoutes(movieHandler handler.MovieHandler, userHandler handler.UserHandler) []route.Route {
 	return []route.Route{
-		// {
-		// 	Method: http.MethodGet,
-		// 	Path:    "/users",
-		// 	Handler: userHandler.GetUsers,
-		// 	Roles: adminOnly,
-		// },
-		// {
-		// 	Method: http.MethodGet,
-		// 	Path:    "/users/:1",
-		// 	Handler: userHandler.GetUser,
-		// 	Roles: adminOnly,
-		// },
+		{
+			Method: http.MethodGet,
+			Path:    "/users",
+			Handler: userHandler.GetUsers,
+			Roles: adminOnly,
+		},
+		{
+			Method: http.MethodGet,
+			Path:    "/users/:1",
+			Handler: userHandler.GetUserByID,
+			Roles: adminOnly,
+		},
 		// {
 		// 	Method: http.MethodPost,
 		// 	Path:    "/users",

@@ -50,3 +50,23 @@ func (h *UserHandler) Register(ctx echo.Context) error {
 	}
 	return ctx.JSON(http.StatusOK, response.SuccessResponse("success register", nil))
 }
+
+func (h *UserHandler) GetUsers(ctx echo.Context) error {
+	users, err := h.userService.GetAll(ctx.Request().Context())
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, err.Error()))
+	}
+	return ctx.JSON(http.StatusOK, response.SuccessResponse("success get all users", users))
+}
+
+func (h *UserHandler) GetUserByID(ctx echo.Context) error {
+	var req dto.GetUserByIDRequest
+	if err := ctx.Bind(&req); err != nil {
+		return ctx.JSON(http.StatusBadRequest, response.ErrorResponse(http.StatusBadRequest, err.Error()))
+	}
+	user, err := h.userService.GetByID(ctx.Request().Context(), req.ID)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, response.ErrorResponse(http.StatusInternalServerError, err.Error()))
+	}
+	return ctx.JSON(http.StatusOK, response.SuccessResponse("success get user by id", user))
+}
